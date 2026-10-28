@@ -1,0 +1,92 @@
+
+/* MOBILE NAVIGATION MENU */
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+
+if (menuBtn && navLinks) {
+    menuBtn.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("active");
+
+        menuBtn.setAttribute("aria-expanded", isOpen);
+        menuBtn.textContent = isOpen ? "✕" : "☰";
+    });
+
+    // Close the menu after clicking a navigation link
+    document.querySelectorAll(".nav-links a").forEach(link => {
+        link.addEventListener("click", () => {
+            navLinks.classList.remove("active");
+            menuBtn.textContent = "☰";
+            menuBtn.setAttribute("aria-expanded", "false");
+        });
+    });
+}
+
+/* ANIMATED WELCOME TEXT */
+const welcomeText = document.getElementById("welcomeText");
+
+if (welcomeText) {
+    const welcomeMessage = "Welcome to Mithila's Digital Space";
+
+    welcomeText.setAttribute("aria-label", welcomeMessage);
+
+    welcomeText.innerHTML = [...welcomeMessage].map((letter, index) => {
+        return `<span aria-hidden="true" style="--i:${index}">
+            ${letter === " " ? "&nbsp;" : letter}
+        </span>`;
+    }).join("");
+}
+
+/* DICE ROLLER GAME */
+const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+const rollBtn = document.getElementById("rollBtn");
+const diceResult = document.getElementById("diceResult");
+const rollMessage = document.getElementById("rollMessage");
+
+if (rollBtn && diceResult && rollMessage) {
+    rollBtn.addEventListener("click", () => {
+        const number = Math.floor(Math.random() * 6) + 1;
+
+        diceResult.textContent = diceFaces[number - 1];
+        rollMessage.textContent = `You rolled a ${number}! 🎉`;
+    });
+}
+
+/* SCROLL REVEAL ANIMATION */
+const revealElements = document.querySelectorAll(".reveal");
+
+if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12
+    });
+
+    revealElements.forEach(element => observer.observe(element));
+} else {
+    revealElements.forEach(element => {
+        element.classList.add("show");
+    });
+}
+
+/* CUSTOM PURPLE CURSOR */
+const cursor = document.getElementById("cursor");
+
+if (cursor) {
+    document.addEventListener("mousemove", event => {
+        cursor.style.left = event.clientX + "px";
+        cursor.style.top = event.clientY + "px";
+    });
+}
+
+/* AUTOMATIC COPYRIGHT YEAR */
+const yearElement = document.getElementById("year");
+
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+}
